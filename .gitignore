@@ -58,12 +58,14 @@ dmypy.json
 # Jupyter
 .ipynb_checkpoints/
 
-# Models and checkpoints
-models/
-checkpoints/
+# Models and checkpoints (root level only)
+/models/
+/checkpoints/
 *.pt
 *.pth
 *.onnx
+# But allow the source code models package
+!src/mdn_lstm/models/
 
 # Data files (except examples)
 *.csv

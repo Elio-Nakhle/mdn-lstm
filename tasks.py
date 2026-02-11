@@ -8,9 +8,7 @@ Usage:
     invoke export --model-path models/best_model.pt --output model.onnx
 """
 
-from pathlib import Path
-
-from invoke import task, Context
+from invoke import Context, task
 
 
 @task
@@ -44,7 +42,6 @@ def train(
         output: Output directory for models.
         verbose: Print training progress.
     """
-    import sys
 
     args = ["python", "-m", "mdn_lstm.cli", "train"]
     args.extend(["--config", config])

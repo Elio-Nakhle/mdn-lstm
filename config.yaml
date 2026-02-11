@@ -1,0 +1,50 @@
+# MDN-LSTM Configuration
+# See README.md for detailed documentation
+
+model:
+  # Number of input features
+  n_input: 8
+  # Number of output dimensions
+  n_output: 7
+  # LSTM hidden layer size
+  n_hidden: 2
+  # Number of Gaussian mixture components
+  n_gaussians: 3
+  # Number of LSTM layers
+  num_lstm_layers: 1
+  # Use bidirectional LSTM
+  bidirectional: false
+
+training:
+  # Maximum number of training epochs
+  epochs: 84000
+  # Learning rate for Adam optimizer
+  learning_rate: 0.001
+  # Weight decay (L2 regularization in optimizer)
+  weight_decay: 0.001
+  # Batch size (not currently used, full batch training)
+  batch_size: 32
+  # Fraction of data used for training (rest is validation)
+  train_split: 0.8
+  # Whether to use ReduceLROnPlateau scheduler
+  use_scheduler: false
+  # Patience for LR scheduler
+  scheduler_patience: 100
+  # Factor to reduce LR by
+  scheduler_factor: 0.5
+  # Enable early stopping
+  early_stopping: true
+  # Epochs to wait before stopping
+  early_stopping_patience: 2000
+  # Minimum improvement to reset patience
+  early_stopping_delta: 0.0005
+  # L2 regularization coefficient in loss function
+  l2_lambda: 0.001
+
+data:
+  # Path to training data CSV file
+  data_path: data.csv
+  # Directory to save trained models
+  model_save_path: models
+  # Directory to save training checkpoints
+  checkpoint_path: checkpoints

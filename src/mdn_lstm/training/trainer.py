@@ -3,9 +3,7 @@
 import math
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, List
 
-import numpy as np
 import torch
 import torch.nn as nn
 from torch.optim import Adam
@@ -18,9 +16,9 @@ from ..models.mdn import mdn_loss
 class TrainingMetrics:
     """Container for training metrics."""
 
-    train_losses: List[float] = field(default_factory=list)
-    val_losses: List[float] = field(default_factory=list)
-    gradient_norms: List[float] = field(default_factory=list)
+    train_losses: list[float] = field(default_factory=list)
+    val_losses: list[float] = field(default_factory=list)
+    gradient_norms: list[float] = field(default_factory=list)
     best_val_loss: float = float("inf")
     best_epoch: int = 0
 
@@ -133,7 +131,7 @@ class Trainer:
         early_stopping: bool = True,
         patience: int = 2000,
         delta: float = 0.0005,
-        checkpoint_dir: Optional[Path] = None,
+        checkpoint_dir: Path | None = None,
         log_interval: int = 100,
         verbose: bool = True,
     ) -> TrainingMetrics:
@@ -227,9 +225,10 @@ class Trainer:
                     break
 
         if verbose:
-            print(f"--------- Training Complete ---------")
+            print("--------- Training Complete ---------")
             print(
-                f"Best validation loss: {self.metrics.best_val_loss:.6f} at epoch {self.metrics.best_epoch}"
+                f"Best validation loss: {self.metrics.best_val_loss:.6f} "
+                f"at epoch {self.metrics.best_epoch}"
             )
 
         return self.metrics

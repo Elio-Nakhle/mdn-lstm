@@ -2,12 +2,11 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, Dataset
 
 
 @dataclass
@@ -51,11 +50,11 @@ class SequenceDataset(Dataset):
     def __len__(self) -> int:
         return len(self.X)
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
         return self.X[idx], self.y[idx]
 
 
-def load_csv_data(path: Path, columns: Optional[list] = None) -> Tuple[np.ndarray, DataStats]:
+def load_csv_data(path: Path, columns: list | None = None) -> tuple[np.ndarray, DataStats]:
     """Load and preprocess data from CSV file.
 
     This function handles the specific data format from the original notebook:
@@ -104,7 +103,7 @@ def load_csv_data(path: Path, columns: Optional[list] = None) -> Tuple[np.ndarra
 
 def load_generic_csv_data(
     path: Path, input_cols: list, normalize: bool = True
-) -> Tuple[np.ndarray, Optional[DataStats]]:
+) -> tuple[np.ndarray, DataStats | None]:
     """Load generic CSV data with specified columns.
 
     Args:
@@ -129,7 +128,7 @@ def load_generic_csv_data(
 
 def prepare_sequences(
     data: np.ndarray, n_input: int = 8, n_output: int = 7
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """Prepare input-output sequences for training.
 
     Creates sequences where X[i] is used to predict y[i] = data[i+1][:-1].
@@ -154,7 +153,7 @@ def prepare_sequences(
 
 def train_val_split(
     X: np.ndarray, y: np.ndarray, train_ratio: float = 0.8
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Split data into training and validation sets.
 
     Args:
@@ -178,7 +177,7 @@ def create_dataloaders(
     y_val: np.ndarray,
     batch_size: int = 32,
     shuffle: bool = True,
-) -> Tuple[DataLoader, DataLoader]:
+) -> tuple[DataLoader, DataLoader]:
     """Create PyTorch DataLoaders for training and validation.
 
     Args:

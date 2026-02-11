@@ -3,16 +3,15 @@
 import argparse
 import sys
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
 
 from .config import Config
-from .data.dataset import load_csv_data, prepare_sequences, train_val_split, DataStats
-from .models.mdn import MDNLSTM, MDN
-from .training.trainer import Trainer, save_model, load_model
+from .data.dataset import DataStats, load_csv_data, prepare_sequences, train_val_split
 from .inference.predictor import Predictor
+from .models.mdn import MDNLSTM
+from .training.trainer import Trainer, load_model, save_model
 
 
 def train_command(args: argparse.Namespace) -> int:
@@ -76,7 +75,7 @@ def train_command(args: argparse.Namespace) -> int:
     )
 
     # Train
-    metrics = trainer.train(
+    trainer.train(
         X_train=X_train,
         y_train=y_train,
         X_val=X_val,

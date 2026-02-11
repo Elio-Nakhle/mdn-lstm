@@ -1,14 +1,12 @@
 """Inference and prediction utilities for MDN-LSTM models."""
 
 from pathlib import Path
-from typing import Optional, Tuple, Union
 
 import numpy as np
 import torch
 import torch.nn as nn
 
 from ..data.dataset import DataStats
-from ..models.mdn import MDNLSTM, MDN
 
 
 class Predictor:
@@ -23,7 +21,7 @@ class Predictor:
     def __init__(
         self,
         model: nn.Module,
-        data_stats: Optional[DataStats] = None,
+        data_stats: DataStats | None = None,
         device: str = "cpu",
     ):
         self.model = model.to(device)
@@ -36,7 +34,7 @@ class Predictor:
         cls,
         model_class: type,
         checkpoint_path: Path,
-        stats_path: Optional[Path] = None,
+        stats_path: Path | None = None,
         device: str = "cpu",
         **model_kwargs,
     ) -> "Predictor":
@@ -69,10 +67,10 @@ class Predictor:
     @torch.no_grad()
     def predict(
         self,
-        x: Union[np.ndarray, torch.Tensor],
+        x: np.ndarray | torch.Tensor,
         normalize_input: bool = True,
         denormalize_output: bool = True,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Make a prediction and return the most likely output.
 
         Args:
@@ -116,10 +114,10 @@ class Predictor:
     @torch.no_grad()
     def predict_distribution(
         self,
-        x: Union[np.ndarray, torch.Tensor],
+        x: np.ndarray | torch.Tensor,
         normalize_input: bool = True,
         denormalize_output: bool = True,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Get the full mixture distribution parameters.
 
         Args:
@@ -158,7 +156,7 @@ class Predictor:
     @torch.no_grad()
     def sample(
         self,
-        x: Union[np.ndarray, torch.Tensor],
+        x: np.ndarray | torch.Tensor,
         n_samples: int = 10,
         normalize_input: bool = True,
         denormalize_output: bool = True,
@@ -203,7 +201,7 @@ def batch_predict(
     batch_size: int = 32,
     normalize_input: bool = True,
     denormalize_output: bool = True,
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """Make predictions on a batch of inputs.
 
     Args:

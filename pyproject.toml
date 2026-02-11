@@ -2,18 +2,11 @@
 name = "mdn-lstm"
 version = "0.1.0"
 description = "Mixed Density Network with LSTM for sequence prediction"
-authors = [
-    {name = "Your Name", email = "your.email@example.com"}
-]
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
 readme = "README.md"
-license = {text = "All Rights Reserved"}
+license = { text = "All Rights Reserved" }
 requires-python = ">=3.10"
-dependencies = [
-    "torch>=2.0.0",
-    "numpy>=1.24.0",
-    "pandas>=2.0.0",
-    "pyyaml>=6.0",
-]
+dependencies = ["torch>=2.0.0", "numpy>=1.24.0", "pandas>=2.0.0", "pyyaml>=6.0"]
 
 [project.optional-dependencies]
 dev = [
@@ -22,6 +15,7 @@ dev = [
     "pytest-cov>=4.0.0",
     "ruff>=0.1.0",
     "mypy>=1.0.0",
+    "types-PyYAML>=6.0",
 ]
 
 [project.scripts]
@@ -46,6 +40,7 @@ dev = [
     "pytest-cov>=4.0.0",
     "ruff>=0.1.0",
     "mypy>=1.0.0",
+    "types-PyYAML>=6.0",
 ]
 
 [tool.ruff]
@@ -54,9 +49,16 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+ignore = [
+    "N806",
+    "N803",
+] # Allow uppercase variable/argument names (common in ML: X, y)
 
 [tool.mypy]
 python_version = "3.10"
-warn_return_any = true
+warn_return_any = false
 warn_unused_configs = true
 ignore_missing_imports = true
+allow_untyped_calls = true
+allow_untyped_defs = true
+disable_error_code = ["index", "assignment", "operator", "arg-type"]

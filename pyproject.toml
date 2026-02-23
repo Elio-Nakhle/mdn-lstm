@@ -6,7 +6,7 @@ authors = [{ name = "Your Name", email = "your.email@example.com" }]
 readme = "README.md"
 license = { text = "All Rights Reserved" }
 requires-python = ">=3.10"
-dependencies = ["torch>=2.0.0", "numpy>=1.24.0", "pandas>=2.0.0", "pyyaml>=6.0"]
+dependencies = ["torch>=2.0.0", "numpy>=1.24.0", "pandas>=2.0.0", "pyyaml>=6.0", "pyinvoke>=1.0.4"]
 
 [project.optional-dependencies]
 dev = [

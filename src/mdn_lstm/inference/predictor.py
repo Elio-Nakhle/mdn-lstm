@@ -185,14 +185,27 @@ class Predictor:
         x_tensor = x_tensor.to(self.device)
 
         pi, sigma, mu = self.model(x_tensor)
-        samples = self.model.sample(pi, sigma, mu, n_samples)
-
-        samples_np = samples.numpy()
-
-        if denormalize_output and self.data_stats:
-            samples_np = self.data_stats.denormalize(samples_np)
-
-        return samples_np
+        batch_size = pi.shape[0]
+        valid_samples = [[] for _ in range(batch_size)]
+        # Keep sampling until each batch has n_samples valid samples
+        while any(len(v) < n_samples for v in valid_samples):
+            needed = [n_samples - len(v) for v in valid_samples]
+            max_needed = max(needed)
+            # Sample more than needed to increase chance of filling
+            extra = max(2, max_needed)
+            samples = self.model.sample(pi, sigma, mu, extra)
+            samples_np = samples.numpy()
+            if denormalize_output and self.data_stats:
+                samples_np = self.data_stats.denormalize(samples_np)
+            # samples_np shape: (batch_size, extra, n_output)
+            for batch_idx in range(batch_size):
+                for s in samples_np[batch_idx]:
+                    # Reject samples with any value less than 0.5 (including negatives)
+                    if (s >= 0.5).all() and len(valid_samples[batch_idx]) < n_samples:
+                        valid_samples[batch_idx].append(s)
+        # Convert to numpy array
+        result = np.array(valid_samples, dtype=samples_np.dtype)
+        return result
 
 
 def batch_predict(
